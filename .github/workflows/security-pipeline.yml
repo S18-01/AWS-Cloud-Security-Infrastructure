@@ -1,0 +1,17 @@
+name: Security pipeline CI
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -B -m unittest discover -s security-pipeline -v
+      - run: bash -n security-pipeline/bootstrap.sh.tftpl
+      - uses: hashicorp/setup-terraform@v3
+      - run: terraform -chdir=security-pipeline init -backend=false
+      - run: terraform -chdir=security-pipeline validate

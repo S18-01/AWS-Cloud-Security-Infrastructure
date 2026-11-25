@@ -1,0 +1,15 @@
+#!/bin/bash
+set -eu
+trap 'shutdown -h now' EXIT
+printf '%s' '${generator_base64}' | base64 -d > /tmp/generate-security-logs.py
+python3 /tmp/generate-security-logs.py > /tmp/security-events.json
+log_key="logs/$(cat /proc/sys/kernel/random/uuid).json"
+for attempt in {1..8}; do
+    if aws s3api put-object --region '${region}' --bucket '${bucket}' \
+        --key "$log_key" --body /tmp/security-events.json \
+        --content-type application/json --if-none-match '*'; then
+        exit 0
+    fi
+    sleep 15
+done
+exit 1
