@@ -2,6 +2,12 @@
 
 University of Maryland cloud infrastructure coursework and a Terraform-managed security monitoring demo.
 
+## Verification status
+
+All seven unit tests and Terraform validation passed locally. [GitHub Actions CI passed](https://github.com/S18-01/AWS-Cloud-Security-Infrastructure/actions/runs/45555781051).
+
+Live AWS verification is pending. The UMD student profile lacked `ec2:DescribeVpcAttribute` for the VPC lookup and `ssm:GetParameter` for the AMI lookup. Terraform stopped during planning before creating any AWS resources.
+
 ## Completed UMD coursework
 
 | ENPM 818R exercise | Recorded result |
