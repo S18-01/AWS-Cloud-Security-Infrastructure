@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfvars
+crash.log
+security-pipeline/detector.zip
